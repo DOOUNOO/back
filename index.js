@@ -9,7 +9,10 @@ const cors = require("cors");
 app.use(cors());
 
 // Import routes
-
+const studentsRoutes = require("./routes/students");
+app.use(studentsRoutes);
+const businessesRoutes = require("./routes/businesses");
+app.use(businessesRoutes);
 mongoose.connect(process.env.MONGODB_URI);
 
 app.listen(process.env.PORT, () => {
