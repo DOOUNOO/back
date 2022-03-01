@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Student = mongoose.model("User", {
+const Student = mongoose.model("Student", {
   email: String,
   account: {
     username: String,
