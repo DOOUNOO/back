@@ -9,6 +9,7 @@ const cloudinary = require("cloudinary").v2;
 
 const Student = require("../models/Student");
 
+//SIGNUP ------------------------------------------------------
 router.post("/student/signup", async (req, res) => {
   try {
     const isStudentExist = await Student.findOne({
@@ -41,6 +42,41 @@ router.post("/student/signup", async (req, res) => {
     } else {
       res.status(400).json({
         message: "This email already has an account",
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+//LOGIN ------------------------------------------------------
+router.post("/student/login", async (req, res) => {
+  try {
+    const student = await Student.findOne({
+      email: req.fields.email,
+    });
+    if (student) {
+      console.log(student.hash, "Hash to compare");
+      const newHash = SHA256(req.fields.password + student.salt).toString(
+        encBase64
+      );
+      console.log(newHash, "New hash");
+      if (student.hash === newHash) {
+        res.json({
+          message: "Welcome !",
+          _id: student._id,
+          token: student.token,
+        });
+      } else {
+        res.status(401).json({
+          message: "Unauthorized - 2",
+        });
+      }
+    } else {
+      res.status(401).json({
+        message: "Unauthorized - 1",
       });
     }
   } catch (error) {
