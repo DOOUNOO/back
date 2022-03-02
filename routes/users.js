@@ -25,7 +25,7 @@ router.post("/user/signup", async (req, res) => {
       const hash = SHA256(req.fields.password + salt).toString(encBase64);
       const token = uid2(64);
 
-      //creation of new business-profil in our database
+      //creation of new user-profil in our database
       const newUser = new User({
         email: req.fields.email,
         username: req.fields.username,
