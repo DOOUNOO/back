@@ -8,7 +8,7 @@ const encBase64 = require("crypto-js/enc-base64");
 const cloudinary = require("cloudinary").v2;
 
 const User = require("../models/User");
-const { route } = require("./experts");
+//const { route } = require("./experts");
 
 //SIGNUP ------------------------------------------------------
 router.post("/user/signup", async (req, res) => {
