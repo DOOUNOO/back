@@ -13,10 +13,10 @@ app.use(cors());
 mongoose.connect(process.env.MONGODB_URI);
 
 // Import routes
-const expertsRoutes = require("./routes/experts");
-app.use(expertsRoutes);
-const usersRoutes = require("./routes/users");
-app.use(usersRoutes);
+// const expertsRoutes = require("./routes/experts");
+// app.use(expertsRoutes);
+// const usersRoutes = require("./routes/users");
+// app.use(usersRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log("Server started 🚀");
