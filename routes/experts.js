@@ -7,16 +7,16 @@ const encBase64 = require("crypto-js/enc-base64");
 
 const cloudinary = require("cloudinary").v2;
 
-const Student = require("../models/Student");
+const Expert = require("../models/Expert");
 
 //SIGNUP ------------------------------------------------------
-router.post("/student/signup", async (req, res) => {
+router.post("/expert/signup", async (req, res) => {
   try {
-    const isStudentExist = await Student.findOne({
+    const isExpertExist = await Expert.findOne({
       email: req.fields.email,
     });
 
-    if (isStudentExist === null) {
+    if (isExpertExist === null) {
       console.log("req.fields ===>", req.fields);
 
       //hash password
@@ -25,7 +25,7 @@ router.post("/student/signup", async (req, res) => {
       const token = uid2(64);
 
       //creation of new student-profil in our database
-      const newStudent = new Student({
+      const newExpert = new Expert({
         email: req.fields.email,
         token: token,
         hash: hash,
@@ -33,11 +33,11 @@ router.post("/student/signup", async (req, res) => {
       });
 
       //save profil
-      await newStudent.save();
+      await newExpert.save();
       res.json({
-        _id: newStudent._id,
-        email: newStudent.email,
-        token: newStudent.token,
+        _id: newExpert._id,
+        email: newExpert.email,
+        token: newExpert.token,
       });
     } else {
       res.status(400).json({
@@ -52,22 +52,22 @@ router.post("/student/signup", async (req, res) => {
 });
 
 //LOGIN ------------------------------------------------------
-router.post("/student/login", async (req, res) => {
+router.post("/expert/login", async (req, res) => {
   try {
-    const student = await Student.findOne({
+    const expert = await Expert.findOne({
       email: req.fields.email,
     });
-    if (student) {
-      console.log(student.hash, "Hash to compare");
-      const newHash = SHA256(req.fields.password + student.salt).toString(
+    if (expert) {
+      console.log(expert.hash, "Hash to compare");
+      const newHash = SHA256(req.fields.password + expert.salt).toString(
         encBase64
       );
       console.log(newHash, "New hash");
-      if (student.hash === newHash) {
+      if (expert.hash === newHash) {
         res.json({
           message: "Welcome !",
-          _id: student._id,
-          token: student.token,
+          _id: expert._id,
+          token: expert.token,
         });
       } else {
         res.status(401).json({
