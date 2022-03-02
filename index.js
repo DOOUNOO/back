@@ -1,13 +1,13 @@
 require("dotenv").config();
-
 const express = require("express");
-const app = express();
 const formidable = require("express-formidable");
-app.use(formidable());
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-dotenv.config();
 const cors = require("cors");
+
+const app = express();
+
+//middleware
+app.use(formidable());
 app.use(cors());
 
 mongoose.connect(process.env.MONGODB_URI);
