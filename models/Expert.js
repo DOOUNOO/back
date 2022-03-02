@@ -1,22 +1,22 @@
 const mongoose = require("mongoose");
 
-const Student = mongoose.model("Student", {
+const Expert = mongoose.model("Expert", {
   email: String,
   account: {
-    username: String,
     firstName: String,
     lastName: String,
-    educationalEstablishment: String,
-    phone: String,
     avatar: Object,
     description: String,
     languages: String,
     education: String,
     diplomas: String,
+    category: String,
+    subcategory: String,
+    hourlyPrice: Number,
   },
   token: String,
   hash: String,
   salt: String,
 });
 
-module.exports = Student;
+module.exports = Expert;

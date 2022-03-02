@@ -7,17 +7,17 @@ const encBase64 = require("crypto-js/enc-base64");
 
 const cloudinary = require("cloudinary").v2;
 
-const Business = require("../models/Business");
-const { route } = require("./students");
+const User = require("../models/User");
+const { route } = require("./experts");
 
 //SIGNUP ------------------------------------------------------
-router.post("/business/signup", async (req, res) => {
+router.post("/user/signup", async (req, res) => {
   try {
-    const isBusinessExist = await Business.findOne({
+    const isUserExist = await User.findOne({
       email: req.fields.email,
     });
 
-    if (isBusinessExist === null) {
+    if (isUserExist === null) {
       console.log("req.fields ===>", req.fields);
 
       //hash password
@@ -26,19 +26,21 @@ router.post("/business/signup", async (req, res) => {
       const token = uid2(64);
 
       //creation of new business-profil in our database
-      const newBusiness = new Business({
+      const newUser = new User({
         email: req.fields.email,
+        username: req.fields.username,
         token: token,
         hash: hash,
         salt: salt,
       });
 
       //save profil
-      await newBusiness.save();
+      await newUser.save();
       res.json({
-        _id: newBusiness._id,
-        email: newBusiness.email,
-        token: newBusiness.token,
+        _id: newUser._id,
+        email: newUser.email,
+        username: newUser.username,
+        token: newUser.token,
       });
     } else {
       res.status(400).json({
@@ -54,22 +56,22 @@ router.post("/business/signup", async (req, res) => {
 
 //LOGIN ------------------------------------------------------
 
-router.post("/business/login", async (req, res) => {
+router.post("/user/login", async (req, res) => {
   try {
-    const business = await Business.findOne({
+    const user = await User.findOne({
       email: req.fields.email,
     });
-    if (business) {
-      console.log(business.hash, "Hash to compare");
-      const newHash = SHA256(req.fields.password + business.salt).toString(
+    if (user) {
+      console.log(user.hash, "Hash to compare");
+      const newHash = SHA256(req.fields.password + user.salt).toString(
         encBase64
       );
       console.log(newHash, "New hash");
-      if (business.hash === newHash) {
+      if (user.hash === newHash) {
         res.json({
           message: "Welcome !",
-          _id: business._id,
-          token: business.token,
+          _id: user._id,
+          token: user.token,
         });
       } else {
         res.status(401).json({
