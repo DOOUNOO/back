@@ -27,19 +27,6 @@ router.post("/expert/signup", async (req, res) => {
       //creation of new student-profil in our database
       const newExpert = new Expert({
         email: req.fields.email,
-        password: req.fields.password,
-        account: {
-          firstName: req.fields.firstname,
-          lastName: req.fields.lastname,
-          titleDescription: req.fields.titledescription,
-          hourlyPrice: req.fields.hourlyprice,
-          description: req.fields.description,
-          category: req.fields.category,
-          subcategory: req.fields.subcategory,
-          totalReview: req.fields.totalreview,
-          totalOrder: req.fields.totalorder,
-          keywords: req.fields.keywords,
-        },
         token: token,
         hash: hash,
         salt: salt,
@@ -50,16 +37,6 @@ router.post("/expert/signup", async (req, res) => {
       res.json({
         _id: newExpert._id,
         email: newExpert.email,
-        firstName: newExpert.account.firstName,
-        lastName: newExpert.account.lastName,
-        titleDescription: newExpert.account.titleDescription,
-        description: newExpert.account.description,
-        hourlyPrice: newExpert.account.hourlyprice,
-        totalOrder: newExpert.account.totalOrder,
-        totalReview: newExpert.account.totalReview,
-        keywords: newExpert.account.keywords,
-        category: newExpert.account.category,
-        subcategory: newExpert.account.subcategory,
         token: newExpert.token,
       });
     } else {

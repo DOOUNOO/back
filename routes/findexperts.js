@@ -27,9 +27,9 @@ router.get("/findexperts", async (req, res) => {
     }
 
     const expertsFiltered = await Expert.find({
-      category: new RegExp(categorySearched, "i"),
-      subcategory: new RegExp(subCategorySearched, "i"),
-      hourlyPrice: { $gte: priceMin, $lte: priceMax },
+      "account.category": new RegExp(categorySearched, "i"),
+      "account.subcategory": new RegExp(subCategorySearched, "i"),
+      "account.hourlyPrice": { $gte: priceMin, $lte: priceMax },
     })
       .limit(expertsPerPage)
 
@@ -37,9 +37,11 @@ router.get("/findexperts", async (req, res) => {
 
       .sort({ hourlyPrice: priceSort })
 
-      .select("category subcategory hourlyPrice");
+      .select("account");
 
-    res.json({ experts: expertsFiltered });
+    const count = expertsFiltered.length;
+
+    res.json({ count: count, experts: expertsFiltered });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
