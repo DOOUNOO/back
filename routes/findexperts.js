@@ -7,7 +7,7 @@ router.get("/findexperts", async (req, res) => {
     const categorySearched = req.query.category;
     const subCategorySearched = req.query.subcategory;
 
-    const expertsPerPage = req.query.limit ? Number(req.query.limit) : 3;
+    const expertsPerPage = req.query.limit ? Number(req.query.limit) : 8;
 
     const page = req.query.page ? Number(req.query.page) : 1;
 
@@ -39,7 +39,7 @@ router.get("/findexperts", async (req, res) => {
 
       .select("category subcategory hourlyPrice");
 
-    res.json(expertsFiltered);
+    res.json({ experts: expertsFiltered });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -47,7 +47,7 @@ router.get("/findexperts", async (req, res) => {
 
 router.get("/findexperts/:id", async (req, res) => {
   try {
-    const expertFinded = await Expert.findOne({ id: req.query.id });
+    const expertFinded = await Expert.findOne({ _id: req.params.id });
     res.json(expertFinded);
   } catch (error) {
     res.status(400).json({ message: error.message });
