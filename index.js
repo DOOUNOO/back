@@ -17,6 +17,8 @@ const expertsRoutes = require("./routes/experts");
 app.use(expertsRoutes);
 const usersRoutes = require("./routes/users");
 app.use(usersRoutes);
+const findExpertsRoutes = require("./routes/findexperts");
+app.use(findExpertsRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log("Server started 🚀");
