@@ -12,16 +12,12 @@ const User = require("../models/User");
 
 //SIGNUP ------------------------------------------------------
 router.post("/user/signup", async (req, res) => {
-  console.log(1);
   try {
-  console.log(2);
-    
-    const isUserExist = await User.findOne({
+    const userAlreadyExists = await User.findOne({
       email: req.fields.email,
     });
-  console.log(3);
 
-    if (isUserExist === null) {
+    if (userAlreadyExists === null) {
       console.log("req.fields ===>", req.fields);
 
       //hash password
@@ -29,31 +25,25 @@ router.post("/user/signup", async (req, res) => {
       const hash = SHA256(req.fields.password + salt).toString(encBase64);
       const token = uid2(64);
 
-      
-  console.log(4);
-      
-      //creation of new user-profil in our database
+      //creation of new user profile in our database
       const newUser = new User({
         email: req.fields.email,
-        username: req.fields.username,
         token: token,
         hash: hash,
         salt: salt,
+        account: {
+          firstName: req.fields.account.firstName,
+          lastName: req.fields.account.lastName
+        }
       });
-      
-  console.log(5);
-      
 
       //save profil
       await newUser.save();
       res.json({
         _id: newUser._id,
         email: newUser.email,
-        username: newUser.username,
         token: newUser.token,
       });
-  console.log(6);
-      
     } else {
       res.status(400).json({
         message: "This email already has an account",
