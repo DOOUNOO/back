@@ -17,6 +17,7 @@ const Expert = mongoose.model("Expert", {
     hourlyPrice: Number,
     totalOrder: Number,
     totalReview: Number,
+    totalRates: Number,
   },
   token: String,
   hash: String,

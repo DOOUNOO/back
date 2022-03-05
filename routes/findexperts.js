@@ -4,12 +4,19 @@ const Expert = require("../models/Expert");
 
 router.get("/findexperts", async (req, res) => {
   try {
-    const categorySearched = req.query.category;
-    const subCategorySearched = req.query.subcategory;
+    const categorySearched = req.query.category
+      ? String(req.query.category)
+      : "";
 
-    const expertsPerPage = req.query.limit ? Number(req.query.limit) : 8;
+    const subCategorySearched = req.query.subcategory
+      ? String(req.query.subcategory)
+      : "";
+
+    const expertsPerPage = req.query.limit ? Number(req.query.limit) : 2;
 
     const page = req.query.page ? Number(req.query.page) : 1;
+
+    const skip = expertsPerPage * (page - 1);
 
     const priceMin = req.query.priceMin ? Number(req.query.priceMin) : 1;
     const priceMax = req.query.priceMax ? Number(req.query.priceMax) : 500;
@@ -33,15 +40,23 @@ router.get("/findexperts", async (req, res) => {
     })
       .limit(expertsPerPage)
 
-      .skip(expertsPerPage * (page - 1))
+      .skip(skip)
 
       .sort({ hourlyPrice: priceSort })
 
       .select("account");
 
-    const count = expertsFiltered.length;
+    const count = await Expert.countDocuments({
+      "account.category": new RegExp(categorySearched, "i"),
+      "account.subcategory": new RegExp(subCategorySearched, "i"),
+      "account.hourlyPrice": { $gte: priceMin, $lte: priceMax },
+    });
 
-    res.json({ count: count, experts: expertsFiltered });
+    res.json({
+      count: count,
+      limit: expertsPerPage,
+      experts: expertsFiltered,
+    });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
