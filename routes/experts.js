@@ -11,11 +11,11 @@ const Expert = require("../models/Expert");
 
 router.post("/expert/signup", async (req, res) => {
   try {
-    const isExpertExist = await Expert.findOne({
+    const expertAlreadyExists = await Expert.findOne({
       email: req.fields.email,
     });
 
-    if (isExpertExist === null) {
+    if (expertAlreadyExists === null) {
       console.log("req.fields ===>", req.fields);
 
       //hash password
@@ -23,12 +23,16 @@ router.post("/expert/signup", async (req, res) => {
       const hash = SHA256(req.fields.password + salt).toString(encBase64);
       const token = uid2(64);
 
-      //creation of new student-profil in our database
+      //creation of new expert profile in our database
       const newExpert = new Expert({
         email: req.fields.email,
         token: token,
         hash: hash,
         salt: salt,
+        account: {
+          firstName: req.fields.account.firstName,
+          lastName: req.fields.account.lastName
+        }
       });
 
       //save profil

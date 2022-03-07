@@ -2,8 +2,9 @@ const mongoose = require("mongoose");
 
 const User = mongoose.model("User", {
   email: String,
-  username: String,
   account: {
+    firstName: String,
+    lastName: String,
     avatar: Object,
   },
   token: String,
