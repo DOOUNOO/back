@@ -56,7 +56,7 @@ router.post("/user/signup", async (req, res) => {
 
 router.get("/users/:token", async (req, res) => {
   try {
-    const userFound = await User.findOne({ _token: req.params.token });
+    const userFound = await User.findOne({ token: req.params.token });
     res.json(userFound);
   } catch (error) {
     res.status(400).json({ message: error.message });
