@@ -15,8 +15,13 @@ mongoose.connect(process.env.MONGODB_URI);
 // Import routes
 const expertsRoutes = require("./routes/experts");
 app.use(expertsRoutes);
+
 const usersRoutes = require("./routes/users");
 app.use(usersRoutes);
+
+const loginRoutes = require("./routes/login");
+app.use(loginRoutes);
+
 const findExpertsRoutes = require("./routes/findexperts");
 app.use(findExpertsRoutes);
 
