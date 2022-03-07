@@ -21,40 +21,34 @@ router.get("/findexperts", async (req, res) => {
     const priceMin = req.query.priceMin ? Number(req.query.priceMin) : 1;
     const priceMax = req.query.priceMax ? Number(req.query.priceMax) : 500;
 
-    let priceSort = "";
+    const priceSort = req.query.sort ? String(req.query.sort) : -1;
 
     if (req.query.sort === "asc" || req.query.sort === "price-asc") {
-      priceSort = "asc";
+      priceSort = 1;
     } else if (req.query.sort === "desc" || req.query.sort === "price-desc") {
-      priceSort = "desc";
+      priceSort = -1;
     }
 
     if (Number(req.query.page) === 0) {
       res.status(400).json({ message: "Page start at 1" });
     }
 
-    const expertsFiltered = await Expert.find({
+    const expertsFilter = {
       "account.category": new RegExp(categorySearched, "i"),
       "account.subcategory": new RegExp(subCategorySearched, "i"),
       "account.hourlyPrice": { $gte: priceMin, $lte: priceMax },
-    })
+    };
+
+    const expertsFiltered = await Expert.find(expertsFilter)
       .limit(expertsPerPage)
 
       .skip(skip)
 
-      .sort({ hourlyPrice: priceSort })
+      .sort({ "account.hourlyPrice": priceSort })
 
       .select("account");
 
-    // const count = await Expert.countDocuments(expertsFiltered)
-    // compte tous les experts de la bdd sans filtre
-    const count = await Expert.countDocuments({
-      "account.category": new RegExp(categorySearched, "i"),
-      "account.subcategory": new RegExp(subCategorySearched, "i"),
-      "account.hourlyPrice": { $gte: priceMin, $lte: priceMax },
-    });
-
-    // fonctionne et filtre le nombre d'expert
+    const count = await Expert.countDocuments(expertsFilter);
 
     res.json({
       count: count,
