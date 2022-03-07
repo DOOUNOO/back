@@ -46,11 +46,15 @@ router.get("/findexperts", async (req, res) => {
 
       .select("account");
 
+    // const count = await Expert.countDocuments(expertsFiltered)
+    // compte tous les experts de la bdd sans filtre
     const count = await Expert.countDocuments({
       "account.category": new RegExp(categorySearched, "i"),
       "account.subcategory": new RegExp(subCategorySearched, "i"),
       "account.hourlyPrice": { $gte: priceMin, $lte: priceMax },
     });
+
+    // fonctionne et filtre le nombre d'expert
 
     res.json({
       count: count,
