@@ -31,8 +31,17 @@ router.post("/expert/signup", async (req, res) => {
         salt: salt,
         account: {
           firstName: req.fields.account.firstName,
-          lastName: req.fields.account.lastName
-        }
+          lastName: req.fields.account.lastName,
+          activateOffer: false,
+          availabilities: {
+            monday: false,
+            tuesday: false,
+            wednesday: false,
+            friday: false,
+            saturday: false,
+            sunday: false,
+          },
+        },
       });
 
       //save profil
