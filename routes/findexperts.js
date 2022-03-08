@@ -37,6 +37,7 @@ router.get("/findexperts", async (req, res) => {
       "account.category": new RegExp(categorySearched, "i"),
       "account.subcategory": new RegExp(subCategorySearched, "i"),
       "account.hourlyPrice": { $gte: priceMin, $lte: priceMax },
+      "account.activateOffer": true,
     };
 
     const expertsFiltered = await Expert.find(expertsFilter)
