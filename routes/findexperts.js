@@ -69,4 +69,13 @@ router.get("/findexpert/:id", async (req, res) => {
   }
 });
 
+router.get("/findexpert/:token", async (req, res) => {
+  try {
+    const expertFound = await Expert.findOne({ token: req.params.token });
+    res.json(expertFound);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 module.exports = router;
