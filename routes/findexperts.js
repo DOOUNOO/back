@@ -22,7 +22,7 @@ router.get("/findexperts", async (req, res) => {
     const priceMin = req.query.priceMin ? Number(req.query.priceMin) : 1;
     const priceMax = req.query.priceMax ? Number(req.query.priceMax) : 500;
 
-    const priceSort = req.query.sort ? String(req.query.sort) : -1;
+    const priceSort = req.query.sort ? String(req.query.sort) : null;
 
     if (req.query.sort === "asc" || req.query.sort === "price-asc") {
       priceSort = 1;
@@ -45,8 +45,6 @@ router.get("/findexperts", async (req, res) => {
       .limit(expertsPerPage)
 
       .skip(skip)
-
-      .sort({ "account.hourlyPrice": priceSort })
 
       .select("account");
 
