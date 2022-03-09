@@ -25,6 +25,9 @@ app.use(loginRoutes);
 const findExpertsRoutes = require("./routes/findexperts");
 app.use(findExpertsRoutes);
 
+const contactRoutes = require("./routes/contact");
+app.use(contactRoutes);
+
 app.listen(process.env.PORT, () => {
   console.log("Server started 🚀");
 });

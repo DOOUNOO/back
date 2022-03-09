@@ -1,6 +1,8 @@
 const express = require("express");
 const isAuthenticated = require("../isAuthenticated");
+const formidableMiddleware = require("express-formidable");
 const router = express.Router();
+router.use(formidableMiddleware());
 const Expert = require("../models/Expert");
 
 router.get("/findexperts", async (req, res) => {
@@ -91,6 +93,16 @@ router.get("/findexpert/:id", async (req, res) => {
   try {
     const expertFinded = await Expert.findOne({ _id: req.params.id });
     res.json(expertFinded);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+router.post("/findexpert", async (req, res) => {
+  try {
+    const expertToken = req.fields.token;
+    const expertFound = await Expert.findOne({ token: expertToken });
+    res.json(expertFound);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
