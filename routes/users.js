@@ -63,4 +63,14 @@ router.get("/users/:token", async (req, res) => {
   }
 });
 
+router.post("/user", async (req, res) => {
+  try {
+    const userToken = req.fields.token;
+    const userFound = await Expert.findOne({ token: userToken });
+    res.json(userFound);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 module.exports = router;
