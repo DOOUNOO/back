@@ -1,4 +1,5 @@
 const express = require("express");
+const isAuthenticated = require("../isAuthenticated");
 const router = express.Router();
 const Expert = require("../models/Expert");
 
@@ -61,7 +62,7 @@ router.get("/findexperts", async (req, res) => {
   }
 });
 
-router.get("/findexperts/:id", async (req, res) => {
+router.get("/findexpert/:id", async (req, res) => {
   try {
     const expertFinded = await Expert.findOne({ _id: req.params.id });
     res.json(expertFinded);

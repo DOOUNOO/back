@@ -17,6 +17,10 @@ const Expert = mongoose.model("Expert", {
     hourlyPrice: Number,
     totalOrder: Number,
     totalReview: Number,
+    socialMedias: {
+      linkedin: String,
+      instagram: String,
+    },
     activateOffer: Boolean,
     availabilities: {
       monday: Boolean,
