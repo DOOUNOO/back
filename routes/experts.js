@@ -37,6 +37,7 @@ router.post("/expert/signup", async (req, res) => {
           category: "",
           subcategory: "",
           activateOffer: false,
+
           availabilities: {
             monday: false,
             tuesday: false,

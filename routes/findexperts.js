@@ -15,16 +15,21 @@ router.get("/findexperts", async (req, res) => {
       ? String(req.query.subcategory)
       : "";
 
+    const priceMin = req.query.priceMin ? Number(req.query.priceMin) : 1;
+
+    const priceMax = req.query.priceMax ? Number(req.query.priceMax) : 500;
+
+    const availability = req.query.availability
+      ? String(req.query.availability)
+      : "";
+
     const expertsPerPage = req.query.limit ? Number(req.query.limit) : 2;
 
     const page = req.query.page ? Number(req.query.page) : 1;
 
     const skip = expertsPerPage * (page - 1);
 
-    const priceMin = req.query.priceMin ? Number(req.query.priceMin) : 1;
-    const priceMax = req.query.priceMax ? Number(req.query.priceMax) : 500;
-
-    const priceSort = req.query.sort ? String(req.query.sort) : null;
+    const priceSort = req.query.sort ? String(req.query.sort) : -1;
 
     if (req.query.sort === "asc" || req.query.sort === "price-asc") {
       priceSort = 1;
@@ -43,12 +48,34 @@ router.get("/findexperts", async (req, res) => {
       "account.activateOffer": true,
     };
 
+    if (availability === "Lundi") {
+      expertsFilter["account.availabilities.monday"] = true;
+    }
+    if (availability === "Mardi") {
+      expertsFilter["account.availabilities.tuesday"] = true;
+    }
+    if (availability === "Mercredi") {
+      expertsFilter["account.availabilities.wednesday"] = true;
+    }
+    if (availability === "Jeudi") {
+      expertsFilter["account.availabilities.thursday"] = true;
+    }
+    if (availability === "Vendredi") {
+      expertsFilter["account.availabilities.friday"] = true;
+    }
+    if (availability === "Samedi") {
+      expertsFilter["account.availabilities.saturday"] = true;
+    }
+    if (availability === "Dimanche") {
+      expertsFilter["account.availabilities.sunday"] = true;
+    }
+
     const expertsFiltered = await Expert.find(expertsFilter)
       .limit(expertsPerPage)
 
-      .skip(skip)
+      .sort({ "account.hourlyPrice": priceSort })
 
-      .select("account");
+      .skip(skip);
 
     const count = await Expert.countDocuments(expertsFilter);
 

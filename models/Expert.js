@@ -17,7 +17,6 @@ const Expert = mongoose.model("Expert", {
     hourlyPrice: Number,
     totalOrder: Number,
     totalReview: Number,
-    link: String,
     avatarURL: String,
     socialMedias: {
       linkedin: String,
