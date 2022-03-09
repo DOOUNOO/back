@@ -69,7 +69,7 @@ router.get("/findexpert/:id", async (req, res) => {
   }
 });
 
-router.get("/findexpert/:token", async (req, res) => {
+router.get("/findexpert/by/:token", async (req, res) => {
   try {
     const expertFound = await Expert.findOne({ token: req.params.token });
     res.json(expertFound);
