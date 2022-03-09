@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-
+const formidableMiddleware = require("express-formidable");
+router.use(formidableMiddleware());
 const SHA256 = require("crypto-js/sha256");
 const uid2 = require("uid2");
 const encBase64 = require("crypto-js/enc-base64");
@@ -57,6 +58,16 @@ router.post("/user/signup", async (req, res) => {
 router.get("/users/:token", async (req, res) => {
   try {
     const userFound = await User.findOne({ token: req.params.token });
+    res.json(userFound);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+router.post("/user", async (req, res) => {
+  try {
+    const userToken = req.fields.token;
+    const userFound = await Expert.findOne({ token: userToken });
     res.json(userFound);
   } catch (error) {
     res.status(400).json({ message: error.message });
