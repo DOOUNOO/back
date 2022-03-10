@@ -48,26 +48,8 @@ router.get("/findexperts", async (req, res) => {
       "account.activateOffer": true,
     };
 
-    if (availability === "Lundi") {
-      expertsFilter["account.availabilities.monday"] = true;
-    }
-    if (availability === "Mardi") {
-      expertsFilter["account.availabilities.tuesday"] = true;
-    }
-    if (availability === "Mercredi") {
-      expertsFilter["account.availabilities.wednesday"] = true;
-    }
-    if (availability === "Jeudi") {
-      expertsFilter["account.availabilities.thursday"] = true;
-    }
-    if (availability === "Vendredi") {
-      expertsFilter["account.availabilities.friday"] = true;
-    }
-    if (availability === "Samedi") {
-      expertsFilter["account.availabilities.saturday"] = true;
-    }
-    if (availability === "Dimanche") {
-      expertsFilter["account.availabilities.sunday"] = true;
+    if (availability !== "") {
+      expertsFilter[`account.availabilities.${availability}`] = true;
     }
 
     const expertsFiltered = await Expert.find(expertsFilter)
