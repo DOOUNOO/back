@@ -1,5 +1,4 @@
 const express = require("express");
-const isAuthenticated = require("../isAuthenticated");
 const formidableMiddleware = require("express-formidable");
 const router = express.Router();
 router.use(formidableMiddleware());
@@ -29,7 +28,7 @@ router.get("/findexperts", async (req, res) => {
 
     const skip = expertsPerPage * (page - 1);
 
-    const priceSort = req.query.sort ? String(req.query.sort) : -1;
+    let priceSort = req.query.sort ? String(req.query.sort) : -1;
 
     if (req.query.sort === "asc" || req.query.sort === "price-asc") {
       priceSort = 1;
