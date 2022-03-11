@@ -36,8 +36,12 @@ router.post("/expert/signup", async (req, res) => {
           lastName: req.fields.account.lastName,
           category: "",
           subcategory: "",
+          totalOrder: 0,
+          totalReview: 0,
           activateOffer: false,
-
+          titleDescription: "",
+          description: "",
+          keywords: "",
           availabilities: {
             monday: false,
             tuesday: false,
@@ -72,7 +76,15 @@ router.patch("/account/:id", async (req, res) => {
   const newEmail = req.fields.email;
   const newFirstName = req.fields.account.firstName;
   const newLastName = req.fields.account.lastName;
+
   const newActivateOffer = req.fields.account.activateOffer;
+
+  const newHourlyPrice = req.fields.account.hourlyPrice;
+  const newKeywords = req.fields.account.keywords;
+
+  const newTitleDescription = req.fields.account.titleDescription;
+  const newDescription = req.fields.account.description;
+
   const newCategory = req.fields.account.category;
   const newSubcategory = req.fields.account.subcategory;
 
@@ -96,6 +108,27 @@ router.patch("/account/:id", async (req, res) => {
       newActivateOffer !== expertToUpdate.account.ActivateOffer
     ) {
       expertToUpdate.account.activateOffer = newActivateOffer;
+    }
+
+    if (
+      newHourlyPrice &&
+      newHourlyPrice !== expertToUpdate.account.hourlyPrice
+    ) {
+      expertToUpdate.account.hourlyPrice = newHourlyPrice;
+    }
+
+    if (newKeywords && newKeywords !== expertToUpdate.account.keywords) {
+      expertToUpdate.account.keywords = newKeywords;
+    }
+
+    if (
+      newTitleDescription &&
+      newTitleDescription !== expertToUpdate.titleDescription
+    ) {
+      expertToUpdate.account.titleDescription = newTitleDescription;
+    }
+    if (newDescription && newDescription !== expertToUpdate.description) {
+      expertToUpdate.account.description = newDescription;
     }
 
     if (newCategory && newCategory !== expertToUpdate.account.category) {
