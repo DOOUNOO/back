@@ -22,7 +22,7 @@ router.get("/findexperts", async (req, res) => {
       ? String(req.query.availability)
       : "";
 
-    const expertsPerPage = req.query.limit ? Number(req.query.limit) : 2;
+    const expertsPerPage = req.query.limit ? Number(req.query.limit) : 4;
 
     const page = req.query.page ? Number(req.query.page) : 1;
 
